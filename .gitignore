@@ -1,0 +1,38 @@
+# Salesforce / SFDX
+.sfdx/
+.sf/
+.localdevserver/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Node.js dependencies
+node_modules/
+package-lock.json
+
+# Environment variables
+.env
+
+# Logs
+*.log
+logs/
+
+# Salesforce deployment artifacts
+mdapi/
+deploy/
+
+# Operating System
+.DS_Store
+Thumbs.db
+
+# Salesforce scratch org artifacts
+force-app/main/default/profiles/
+**/profiles/
+**/profileSessionSettings/
+**/profilePasswordPolicies/
+
+# Other SFDX artifacts
+IlluminatedCloud/
+*.sublime-project
+*.sublime-workspace

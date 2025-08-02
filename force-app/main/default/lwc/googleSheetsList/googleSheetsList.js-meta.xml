@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__Tab</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage,lightning__RecordPage,lightning__HomePage">
+            <property 
+                name="showUrlInput" 
+                type="Boolean" 
+                label="Show URL Input" 
+                description="When enabled, users can input Google Sheet URLs and sheet names. When disabled, uses the default URL and sheet name."
+                default="true"/>
+            <property 
+                name="defaultSpreadsheetUrl" 
+                type="String" 
+                label="Default Google Sheet URL" 
+                description="The default URL of the public Google Sheet to display"
+                placeholder="https://docs.google.com/spreadsheets/d/..."/>
+            <property 
+                name="defaultSheetName" 
+                type="String" 
+                label="Sheet Name" 
+                description="Name of the sheet to display (e.g., Sheet1)"
+                default="Sheet1"/>
+            <property 
+                name="showUrlInput" 
+                type="Boolean" 
+                label="Allow URL Changes" 
+                description="Allow users to change the Google Sheet URL"
+                default="false"/>
+            <property 
+                name="height" 
+                type="Integer" 
+                default="400" 
+                label="Height (px)" 
+                description="Height of the datatable in pixels"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

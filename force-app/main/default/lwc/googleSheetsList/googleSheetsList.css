@@ -1,0 +1,25 @@
+.unsaved-changes-warning {
+    background-color: #fff1d6;
+    color: #514f4d;
+    padding: 0.5rem;
+    border-left: 3px solid #ffb75d;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.unsaved-changes-warning .slds-notify__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Style for cells with unsaved changes */
+:host ::part(cell-edit) {
+    background-color: #fafaf1;
+    font-style: italic;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

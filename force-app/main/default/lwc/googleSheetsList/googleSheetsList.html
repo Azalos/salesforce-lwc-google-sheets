@@ -1,0 +1,149 @@
+<template>
+    <lightning-card title="Google Sheets Data" icon-name="standard:document">
+        <lightning-button-icon
+            slot="actions"
+            icon-name="utility:refresh"
+            alternative-text="Refresh"
+            title="Refresh"
+            onclick={handleRefresh}>
+        </lightning-button-icon>
+        
+        <div class="slds-p-around_medium">
+            <!-- Google Sheet URL Input (Only shown if showUrlInput is true) -->
+            <template if:true={showUrlInput}>
+                <div class="slds-form slds-p-bottom_medium">
+                    <div class="slds-form-element slds-p-bottom_small">
+                        <lightning-input
+                            type="url"
+                            label="Google Sheet URL"
+                            value={_spreadsheetUrl}
+                            onchange={handleUrlChange}
+                            placeholder="https://docs.google.com/spreadsheets/d/..."
+                            required>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-form-element slds-p-bottom_small">
+                        <lightning-input
+                            type="text"
+                            label="Sheet Name"
+                            value={_sheetName}
+                            onchange={handleSheetNameChange}
+                            placeholder="Sheet1">
+                        </lightning-input>
+                    </div>
+                    <lightning-button
+                        label="Load Sheet"
+                        variant="brand"
+                        onclick={handleLoadSheet}
+                        class="slds-m-top_small">
+                    </lightning-button>
+                </div>
+            </template>
+            <!-- New Record Button -->
+            <div class="slds-p-bottom_small">
+                <lightning-button 
+                    label="New Record" 
+                    title="New Record" 
+                    onclick={handleNewClick} 
+                    icon-name="utility:add">
+                </lightning-button>
+            </div>
+
+            <!-- Error message if any -->
+            <template if:true={error}>
+                <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                    <span class="slds-assistive-text">error</span>
+                    <h2>{error.body.message}</h2>
+                </div>
+            </template>
+
+            <!-- Loading spinner -->
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </template>
+
+            <!-- Unsaved Changes Warning and Actions -->
+            <template if:true={hasUnsavedChanges}>
+                <div class="unsaved-changes-warning slds-notify slds-notify_alert slds-m-bottom_small">
+                    <div class="slds-notify__content">
+                        <lightning-icon icon-name="utility:warning" alternative-text="Warning" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                        <span class="slds-m-right_large">You have {unsavedChangeCount} unsaved {unsavedChangeCount | pluralize:'change:changes'}.</span>
+                        <lightning-button-group>
+                            <lightning-button 
+                                label="Save All" 
+                                variant="brand" 
+                                onclick={handleSaveAll}
+                                class="slds-m-right_x-small">
+                            </lightning-button>
+                            <lightning-button 
+                                label="Discard Changes" 
+                                variant="destructive" 
+                                onclick={handleDiscardChanges}>
+                            </lightning-button>
+                        </lightning-button-group>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Data table -->
+            <template if:true={data}>
+                <lightning-datatable
+                    key-field="rowIndex"
+                    data={data}
+                    columns={columns}
+                    hide-checkbox-column
+                    show-row-number-column
+                    sorted-by={sortedBy}
+                    sorted-direction={sortDirection}
+                    onrowaction={handleRowAction}
+                    onsort={handleSort}
+                    oncellchange={handleCellChange}
+                    suppress-bottom-bar
+                    draft-values={draftValues}>
+                </lightning-datatable>
+            </template>
+        </div>
+    </lightning-card>
+
+    <!-- Edit/New Modal -->
+    <template if:true={showModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal Header -->
+                <header class="slds-modal__header">
+                    <h2 class="slds-modal__title slds-hyphenate">
+                        {isNewRecord ? 'New Record' : 'Edit Record'}
+                    </h2>
+                </header>
+
+                <!-- Modal Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <template for:each={columns} for:item="field">
+                        <lightning-input
+                            key={field.fieldName}
+                            label={field.label}
+                            name={field.fieldName}
+                            value={currentRecord[field.fieldName]}
+                            onchange={handleFieldChange}>
+                        </lightning-input>
+                    </template>
+                </div>
+
+                <!-- Modal Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning-button
+                        label="Cancel"
+                        onclick={handleModalClose}
+                        class="slds-m-right_x-small">
+                    </lightning-button>
+                    <lightning-button
+                        label="Save"
+                        variant="brand"
+                        onclick={handleSave}>
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

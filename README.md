@@ -208,7 +208,7 @@ For large-scale enterprise usage:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/[your-username]/salesforce-lwc-google-sheets.git
+   git clone https://github.com/Azalos/salesforce-lwc-google-sheets.git
    cd salesforce-lwc-google-sheets
    ```
 
